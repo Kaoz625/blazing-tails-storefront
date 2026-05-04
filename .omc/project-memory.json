@@ -42,7 +42,7 @@
     "runtime": null
   },
   "build": {
-    "buildCommand": "cd \"/Users/markususche/Syncthing/Brain/Markus Brain/NYCTailblazers/Projects/magazine/blazing-tails/website\" && npm run build 2>&1 | tail -20",
+    "buildCommand": "cd \"/Users/markususche/Syncthing/Brain/Markus Brain/NYCTailblazers/Projects/magazine/blazing-tails/website\" && npm run build 2>&1 | tail -15",
     "testCommand": null,
     "lintCommand": "npm run lint",
     "devCommand": "npm run dev",
@@ -159,8 +159,14 @@
   "hotPaths": [
     {
       "path": "src/components/MagazineViewer.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1777903082486,
+      "accessCount": 7,
+      "lastAccessed": 1777904577282,
+      "type": "file"
+    },
+    {
+      "path": "src/data/editions.ts",
+      "accessCount": 3,
+      "lastAccessed": 1777904571243,
       "type": "file"
     },
     {

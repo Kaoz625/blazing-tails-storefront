@@ -817,7 +817,7 @@ export default function MagazineViewer({ edition, nsfw: _nsfw }: MagazineViewerP
             {qty}
           </span>
           <button
-            onClick={() => setQty(Math.min(28, qty + 1))}
+            onClick={() => setQty(Math.min(168, qty + 1))}
             className="w-8 h-8 rounded font-bold transition-colors"
             style={{ backgroundColor: "var(--border-warm)", color: "var(--text-primary)", border: "1px solid var(--border-cream)" }}
           >
