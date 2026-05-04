@@ -3,53 +3,115 @@ import type { Edition } from "../data/editions";
 
 interface EditionCardProps {
   edition: Edition;
-  nsfw: boolean;
 }
 
-export default function EditionCard({ edition, nsfw }: EditionCardProps) {
+export default function EditionCard({ edition }: EditionCardProps) {
+  const isNsfw = edition.edition === "nsfw";
+
   return (
     <Link
       to={`/magazine/${edition.id}`}
-      className="group block rounded-xl overflow-hidden border border-white/10 bg-gray-900 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10 hover:-translate-y-1"
+      className="group block fade-up"
+      style={{ textDecoration: "none" }}
     >
-      {/* Cover image area */}
+      {/* Magazine cover */}
       <div
-        className="relative aspect-[3/4] overflow-hidden flex items-center justify-center"
-        style={{ backgroundColor: edition.coverColor }}
+        className="cover-ratio relative overflow-hidden mb-3"
+        style={{
+          backgroundColor: edition.coverColor,
+          borderRadius: "4px",
+          boxShadow: "rgba(0,0,0,0.08) 0px 2px 12px, 0 0 0 1px rgba(0,0,0,0.04)",
+          transition: "transform 0.25s ease, box-shadow 0.25s ease",
+        }}
       >
-        <div
-          className={`absolute inset-0 transition-all duration-300 ${
-            nsfw ? "" : "backdrop-blur-xl bg-black/60"
-          }`}
+        {/* Cover image (shown when generated) */}
+        <img
+          src={`/outputs/${edition.id}/${edition.id}-${edition.performers[0].toLowerCase().replace(/\s+/g,"-")}/s01-intro.jpg`}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: 0.85 }}
+          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
         />
-        <div className="relative z-10 text-center p-4">
-          <div className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: "#d4af37" }}>
-            {edition.category}
+
+        {/* Cover overlay text */}
+        <div className="absolute inset-0 flex flex-col justify-between p-5">
+          {/* Top badge */}
+          <div className="flex items-center justify-between">
+            <span
+              className="text-overline"
+              style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.55rem" }}
+            >
+              NYC Tailblazers
+            </span>
+            <span
+              className="text-xs font-sans font-medium px-2 py-0.5 rounded"
+              style={{
+                backgroundColor: isNsfw ? "rgba(201,100,66,0.85)" : "rgba(255,255,255,0.2)",
+                color: "rgba(255,255,255,0.95)",
+                fontSize: "0.6rem",
+                letterSpacing: "0.06em",
+              }}
+            >
+              {isNsfw ? "NSFW" : "SFW"}
+            </span>
           </div>
-          <div className="text-white font-black text-xl leading-tight mb-1">
-            Blazing Tails
-          </div>
-          <div className="text-white/70 text-xs">Vol. {edition.volume}</div>
-          {!nsfw && (
-            <div className="mt-3 text-white/50 text-xs">
-              [NSFW — toggle to view]
+
+          {/* Bottom title area */}
+          <div>
+            <div
+              className="font-serif font-medium leading-tight mb-1"
+              style={{
+                fontSize: "clamp(1rem, 2.5vw, 1.3rem)",
+                color: "rgba(255,255,255,0.95)",
+                textShadow: "0 1px 4px rgba(0,0,0,0.4)",
+              }}
+            >
+              {edition.title}
             </div>
-          )}
+            <div
+              className="font-sans"
+              style={{
+                fontSize: "0.625rem",
+                color: "rgba(255,255,255,0.55)",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}
+            >
+              {edition.brand} · Issue {edition.issue}
+            </div>
+          </div>
         </div>
+
+        {/* Hover lift */}
+        <style>{`
+          .group:hover > div[style*="borderRadius"] {
+            transform: translateY(-4px);
+            box-shadow: rgba(0,0,0,0.15) 0px 8px 24px, 0 0 0 1px rgba(0,0,0,0.06);
+          }
+        `}</style>
       </div>
 
-      {/* Info */}
-      <div className="p-4">
-        <div className="text-xs text-yellow-500 font-semibold tracking-wide uppercase mb-1">
-          {edition.category} · Vol. {edition.volume}
-        </div>
-        <h3 className="text-white font-bold text-sm leading-snug mb-2 group-hover:text-yellow-400 transition-colors">
+      {/* Below-cover info */}
+      <div className="px-0.5">
+        <div
+          className="font-serif font-medium text-sm leading-snug mb-0.5"
+          style={{ color: "var(--text-primary)" }}
+        >
           {edition.title}
-        </h3>
-        <p className="text-gray-500 text-xs mb-3 italic">"{edition.tagline}"</p>
+        </div>
         <div className="flex items-center justify-between">
-          <span className="text-yellow-400 font-bold text-lg">${edition.price.toFixed(2)}</span>
-          <span className="text-xs text-gray-500">{edition.performers.length} performers</span>
+          <span
+            className="font-sans text-xs"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            {edition.brand} · Issue {edition.issue}
+          </span>
+          <span
+            className="font-sans text-xs font-medium"
+            style={{ color: "var(--color-terracotta)" }}
+          >
+            ${edition.price.toFixed(2)}
+          </span>
         </div>
       </div>
     </Link>

@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { getEditionsByCategory, CATEGORIES } from "../data/editions";
+import { getEditionsByBrand, BRANDS, getSfwEditions, getNsfwEditions } from "../data/editions";
 import MagazineGrid from "../components/MagazineGrid";
 
 interface CategoryProps {
@@ -8,15 +8,23 @@ interface CategoryProps {
 
 export default function Category({ nsfw }: CategoryProps) {
   const { name } = useParams<{ name: string }>();
-  const categoryName = CATEGORIES.find((c) => c.toLowerCase() === name?.toLowerCase());
-  const editions = categoryName ? getEditionsByCategory(categoryName) : [];
+  const brand = BRANDS.find((b) => b.toLowerCase() === name?.toLowerCase());
+  const brandEditions = brand ? getEditionsByBrand(brand) : [];
+  const visibleCount = nsfw
+    ? getNsfwEditions().filter((e) => e.brand === brand).length
+    : getSfwEditions().filter((e) => e.brand === brand).length;
 
-  if (!categoryName || editions.length === 0) {
+  if (!brand || brandEditions.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "var(--bg-parchment)" }}
+      >
         <div className="text-center">
-          <p className="text-gray-400 mb-4">Category not found.</p>
-          <Link to="/" className="text-yellow-400 hover:underline">
+          <p className="font-serif mb-4" style={{ color: "var(--text-secondary)", fontStyle: "italic" }}>
+            Brand not found.
+          </p>
+          <Link to="/" className="font-sans text-sm" style={{ color: "var(--color-terracotta)" }}>
             ← Back to all editions
           </Link>
         </div>
@@ -25,38 +33,58 @@ export default function Category({ nsfw }: CategoryProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen" style={{ backgroundColor: "var(--bg-parchment)" }}>
+      <div className="max-w-7xl mx-auto px-5 py-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-          <Link to="/" className="hover:text-yellow-400 transition-colors">
+        <nav
+          className="flex items-center gap-2 font-sans text-sm mb-6"
+          style={{ color: "var(--text-tertiary)" }}
+        >
+          <Link to="/" className="transition-colors" style={{ color: "var(--text-tertiary)" }}>
             Home
           </Link>
           <span>›</span>
-          <span className="text-gray-300">{categoryName}</span>
+          <span style={{ color: "var(--text-primary)" }}>{brand}</span>
         </nav>
 
         <div className="mb-8">
-          <div className="text-yellow-500 text-xs tracking-widest uppercase font-bold mb-1">
-            Category
-          </div>
-          <h1 className="text-4xl font-black text-white mb-2">{categoryName}</h1>
-          <p className="text-gray-400">{editions.length} editions in this collection</p>
+          <p className="text-overline mb-2" style={{ color: "var(--color-terracotta)" }}>
+            Brand
+          </p>
+          <h1
+            className="font-serif mb-1"
+            style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 500, color: "var(--text-primary)" }}
+          >
+            {brand}
+          </h1>
+          <p className="font-sans text-sm" style={{ color: "var(--text-secondary)" }}>
+            {visibleCount} {nsfw ? "NSFW" : "SFW"} edition{visibleCount !== 1 ? "s" : ""} in this brand
+          </p>
         </div>
 
-        <MagazineGrid nsfw={nsfw} filterCategory={categoryName} />
+        <MagazineGrid nsfw={nsfw} filterCategory={brand} />
 
-        {/* All categories */}
-        <div className="mt-12 border-t border-white/5 pt-8">
-          <p className="text-gray-500 text-sm mb-4">Other categories</p>
+        {/* Other brands */}
+        <div
+          className="mt-12 pt-8"
+          style={{ borderTop: "1px solid var(--border-warm)" }}
+        >
+          <p className="font-sans text-sm mb-4" style={{ color: "var(--text-tertiary)" }}>
+            Other brands
+          </p>
           <div className="flex flex-wrap gap-2">
-            {CATEGORIES.filter((c) => c !== categoryName).map((cat) => (
+            {BRANDS.filter((b) => b !== brand).map((b) => (
               <Link
-                key={cat}
-                to={`/category/${cat.toLowerCase()}`}
-                className="px-4 py-1.5 rounded-full text-sm border border-white/10 text-gray-400 hover:border-yellow-500/40 hover:text-yellow-400 transition-colors"
+                key={b}
+                to={`/category/${b.toLowerCase()}`}
+                className="font-sans font-medium text-xs px-4 py-1.5 rounded-full transition-all"
+                style={{
+                  backgroundColor: "var(--border-cream)",
+                  color: "var(--text-secondary)",
+                  border: "1px solid var(--border-warm)",
+                }}
               >
-                {cat}
+                {b}
               </Link>
             ))}
           </div>
