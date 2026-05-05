@@ -5,8 +5,14 @@ interface EditionCardProps {
   edition: Edition;
 }
 
+function toPipelineId(editionId: string): string {
+  const m = editionId.match(/^(.+?)-(\d+)-(sfw|nsfw)$/);
+  return m ? `${m[1]}-vol${m[2]}` : editionId;
+}
+
 export default function EditionCard({ edition }: EditionCardProps) {
   const isNsfw = edition.edition === "nsfw";
+  const pipelineId = toPipelineId(edition.id);
 
   return (
     <Link
@@ -26,7 +32,7 @@ export default function EditionCard({ edition }: EditionCardProps) {
       >
         {/* Cover image (shown when generated) */}
         <img
-          src={`/outputs/${edition.id}/${edition.id}-${edition.performers[0].toLowerCase().replace(/\s+/g,"-")}/s01-intro.jpg`}
+          src={`/outputs/${pipelineId}/${pipelineId}-${edition.performers[0].toLowerCase().replace(/\s+/g,"-")}/s01-intro.jpg`}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           style={{ opacity: 0.85 }}

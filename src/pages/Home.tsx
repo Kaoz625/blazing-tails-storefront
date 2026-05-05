@@ -63,7 +63,7 @@ export default function Home({ nsfw }: HomeProps) {
               fontWeight: 400,
             }}
           >
-            Seven brands. Twenty-eight editions. Every shade of New York City.
+            Seven brands. 168 editions. Every shade of New York City.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

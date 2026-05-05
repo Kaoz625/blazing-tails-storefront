@@ -180,6 +180,12 @@
       "accessCount": 1,
       "lastAccessed": 1777903139766,
       "type": "file"
+    },
+    {
+      "path": "src/components/EditionCard.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1777928397368,
+      "type": "file"
     }
   ],
   "userDirectives": []
