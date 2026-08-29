@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# oh-my-claudecode runtime state (agent session/memory junk, not project code)
+.omc/
+
 # Generated magazine image sets (old deleted viewer feature) — not referenced
 # by the storefront, regenerable via the pipeline, too large/numerous for git.
 public/outputs/
