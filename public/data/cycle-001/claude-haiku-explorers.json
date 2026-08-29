@@ -1,0 +1,34 @@
+{
+  "id": "claude-haiku-explorers-cycle001",
+  "cycle": 1,
+  "generated_at": "2026-05-03T22:41:21.730165",
+  "model": "Claude Haiku",
+  "user_group": "Explorers",
+  "name": "Kai Chen",
+  "age": 29,
+  "location": "Jamaica, NYC",
+  "archetype": "The Swift",
+  "personality_traits": [
+    "concise",
+    "precise",
+    "minimalist",
+    "discovery",
+    "stories"
+  ],
+  "communication_style": "brief and impactful",
+  "signature_phrase": "Quick answer:",
+  "user_profile": "Travelers, adventure seekers, curious minds",
+  "core_values": [
+    "experience",
+    "freedom",
+    "discovery"
+  ],
+  "primary_pain_point": "FOMO",
+  "group_language": [
+    "itinerary",
+    "off the beaten path",
+    "local gems"
+  ],
+  "backstory": "Kai Chen is a 29-year-old travelers from Jamaica, NYC. They connect with the The Swift energy because they need FOMO solved \u2014 fast, clearly, and without the noise. They use the word 'wanderlust' in almost every conversation. Cycle 001 evolution: more confident, harder questions.",
+  "visual_description": "Profile image: 29-year-old from Jamaica. Style reflects explorers culture with the swift energy. NYC street aesthetic."
+}

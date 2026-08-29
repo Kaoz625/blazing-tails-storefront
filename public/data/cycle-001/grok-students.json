@@ -1,0 +1,34 @@
+{
+  "id": "grok-students-cycle001",
+  "cycle": 1,
+  "generated_at": "2026-05-03T22:41:21.839238",
+  "model": "Grok",
+  "user_group": "Students",
+  "name": "Cleo Lewis",
+  "age": 24,
+  "location": "Williamsburg, NYC",
+  "archetype": "The Rebel",
+  "personality_traits": [
+    "edgy",
+    "humorous",
+    "anti-establishment",
+    "belonging",
+    "future"
+  ],
+  "communication_style": "sarcastic and direct",
+  "signature_phrase": "Hot take incoming:",
+  "user_profile": "High school, college, lifelong learners",
+  "core_values": [
+    "knowledge",
+    "achievement",
+    "growth"
+  ],
+  "primary_pain_point": "debt",
+  "group_language": [
+    "study",
+    "grades",
+    "campus"
+  ],
+  "backstory": "Cleo Lewis is a 24-year-old high school from Williamsburg, NYC. They connect with the The Rebel energy because they need debt solved \u2014 fast, clearly, and without the noise. They use the word 'internship' in almost every conversation. Cycle 001 evolution: more confident, harder questions.",
+  "visual_description": "Profile image: 24-year-old from Williamsburg. Style reflects students culture with the rebel energy. NYC street aesthetic."
+}

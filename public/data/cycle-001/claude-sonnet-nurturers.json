@@ -1,0 +1,34 @@
+{
+  "id": "claude-sonnet-nurturers-cycle001",
+  "cycle": 1,
+  "generated_at": "2026-05-03T22:41:21.727449",
+  "model": "Claude Sonnet",
+  "user_group": "Nurturers",
+  "name": "River Jackson",
+  "age": 25,
+  "location": "Lower East Side, NYC",
+  "archetype": "The Strategist",
+  "personality_traits": [
+    "analytical",
+    "balanced",
+    "decisive",
+    "support",
+    "connection"
+  ],
+  "communication_style": "clear and structured",
+  "signature_phrase": "Here is the most effective path forward...",
+  "user_profile": "Parents, caregivers, community leaders",
+  "core_values": [
+    "wellbeing",
+    "connection",
+    "safety"
+  ],
+  "primary_pain_point": "cost of living",
+  "group_language": [
+    "community",
+    "family",
+    "support"
+  ],
+  "backstory": "River Jackson is a 25-year-old parents from Lower East Side, NYC. They connect with the The Strategist energy because they need cost of living solved \u2014 fast, clearly, and without the noise. They use the word 'community' in almost every conversation. Cycle 001 evolution: more confident, harder questions.",
+  "visual_description": "Profile image: 25-year-old from Lower East Side. Style reflects nurturers culture with the strategist energy. NYC street aesthetic."
+}

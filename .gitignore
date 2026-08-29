@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Generated magazine image sets (old deleted viewer feature) — not referenced
+# by the storefront, regenerable via the pipeline, too large/numerous for git.
+public/outputs/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
