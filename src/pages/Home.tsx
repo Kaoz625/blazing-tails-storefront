@@ -1,309 +1,194 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BRANDS, getSfwEditions, getNsfwEditions } from "../data/editions";
-import EditionCard from "../components/EditionCard";
+import { useCharacters } from "../context/CharacterContext";
+import CharacterCard from "../components/CharacterCard";
+import { GROUP_ICONS } from "../types/character";
 
-interface HomeProps {
-  nsfw: boolean;
-}
+const GROUPS = ["Creators", "Hustlers", "Students", "Professionals", "Gamers", "Explorers", "Nurturers"];
 
-export default function Home({ nsfw }: HomeProps) {
-  const [activeBrand, setActiveBrand] = useState<string | null>(null);
+export default function Home() {
+  const { characters, loading } = useCharacters();
 
-  const allEditions = nsfw ? getNsfwEditions() : getSfwEditions();
-  const filtered = activeBrand
-    ? allEditions.filter((e) => e.brand === activeBrand)
-    : allEditions;
+  const featured = GROUPS.slice(0, 6)
+    .map((group) => characters.find((c) => c.user_group === group && c.model === "Claude Opus"))
+    .filter(Boolean) as typeof characters;
 
   return (
-    <div style={{ backgroundColor: "var(--bg-parchment)", minHeight: "100vh" }}>
-
+    <div className="min-h-screen" style={{ background: "var(--bg)" }}>
       {/* Hero */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          borderBottom: "1px solid var(--border-warm)",
-          padding: "clamp(3rem, 8vw, 6rem) 1.25rem clamp(2.5rem, 6vw, 5rem)",
-        }}
-      >
-        {/* Subtle warm radial */}
+      <section className="relative overflow-hidden py-24 px-5">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 70% 60% at 50% -10%, rgba(201,100,66,0.07) 0%, transparent 70%)",
+              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,111,239,0.15) 0%, transparent 70%)",
           }}
         />
-
-        <div className="relative max-w-3xl mx-auto text-center">
-          <p className="text-overline mb-4" style={{ color: "var(--color-terracotta)" }}>
-            NYC Tailblazers · Synthetic Editorial
-          </p>
-
-          <h1
-            className="font-serif mb-4"
-            style={{
-              fontSize: "clamp(3rem, 8vw, 6rem)",
-              fontWeight: 500,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
-              color: "var(--text-primary)",
-            }}
-          >
-            Blazing Tails
-          </h1>
-
-          <p
-            className="font-serif"
-            style={{
-              fontSize: "clamp(1rem, 2vw, 1.25rem)",
-              fontStyle: "italic",
-              color: "var(--text-secondary)",
-              marginBottom: "2rem",
-              fontWeight: 400,
-            }}
-          >
-            Seven brands. 168 editions. Every shade of New York City.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              href="#editions"
-              className="font-sans font-medium px-8 py-3 rounded-lg transition-all"
-              style={{
-                backgroundColor: "var(--text-primary)",
-                color: "var(--bg-parchment)",
-                fontSize: "0.875rem",
-                letterSpacing: "0.02em",
-              }}
-            >
-              Browse all {allEditions.length} editions
-            </a>
-            <a
-              href="mailto:nyctailblazers@nyctailblazers.com"
-              className="font-sans font-medium px-8 py-3 rounded-lg transition-all border"
-              style={{
-                borderColor: "var(--border-warm)",
-                color: "var(--text-secondary)",
-                fontSize: "0.875rem",
-              }}
-            >
-              Wholesale inquiries
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats bar */}
-      <div
-        style={{
-          borderBottom: "1px solid var(--border-warm)",
-          backgroundColor: "var(--bg-ivory)",
-        }}
-      >
-        <div className="max-w-4xl mx-auto px-5 py-5 flex flex-wrap justify-center gap-10">
-          {[
-            { value: "28", label: "Total editions" },
-            { value: "168", label: "Performers" },
-            { value: "7", label: "Brands" },
-            { value: "$22.99", label: "Starting price" },
-          ].map((s) => (
-            <div key={s.label} className="text-center">
-              <div
-                className="font-serif"
-                style={{
-                  fontSize: "1.75rem",
-                  fontWeight: 500,
-                  color: "var(--color-terracotta)",
-                  lineHeight: 1,
-                }}
-              >
-                {s.value}
-              </div>
-              <div
-                className="text-overline mt-1"
-                style={{ color: "var(--text-tertiary)", fontSize: "0.55rem" }}
-              >
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Brand filter */}
-      <div className="max-w-7xl mx-auto px-5 pt-8 pb-4">
-        <div className="flex flex-wrap gap-2 items-center">
-          <button
-            onClick={() => setActiveBrand(null)}
-            className="font-sans font-medium text-xs px-4 py-1.5 rounded-full transition-all"
-            style={
-              activeBrand === null
-                ? {
-                    backgroundColor: "var(--text-primary)",
-                    color: "var(--bg-parchment)",
-                  }
-                : {
-                    backgroundColor: "var(--border-cream)",
-                    color: "var(--text-secondary)",
-                    border: "1px solid var(--border-warm)",
-                  }
-            }
-          >
-            All ({allEditions.length})
-          </button>
-          {BRANDS.map((brand) => {
-            const count = allEditions.filter((e) => e.brand === brand).length;
-            const isActive = activeBrand === brand;
-            return (
-              <button
-                key={brand}
-                onClick={() => setActiveBrand(isActive ? null : brand)}
-                className="font-sans font-medium text-xs px-4 py-1.5 rounded-full transition-all"
-                style={
-                  isActive
-                    ? {
-                        backgroundColor: "var(--color-terracotta)",
-                        color: "#fff",
-                      }
-                    : {
-                        backgroundColor: "var(--border-cream)",
-                        color: "var(--text-secondary)",
-                        border: "1px solid var(--border-warm)",
-                      }
-                }
-              >
-                {brand} ({count})
-              </button>
-            );
-          })}
-          <span
-            className="font-sans text-xs ml-auto hidden sm:block"
-            style={{ color: "var(--text-tertiary)" }}
-          >
-            {nsfw ? "NSFW editions" : "SFW editions"} · toggle at top right
-          </span>
-        </div>
-      </div>
-
-      {/* Edition grid */}
-      <section id="editions" className="max-w-7xl mx-auto px-5 pb-20">
-        <div
-          className="grid gap-6"
-          style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 180px), 1fr))",
-          }}
-        >
-          {filtered.map((edition, i) => (
-            <div
-              key={edition.id}
-              style={{ animationDelay: `${i * 0.04}s` }}
-            >
-              <EditionCard edition={edition} />
-            </div>
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <div
-            className="text-center py-20 font-serif"
-            style={{ color: "var(--text-tertiary)", fontSize: "1.1rem", fontStyle: "italic" }}
+            className="inline-block text-xs font-mono px-3 py-1 rounded-full border mb-6"
+            style={{
+              borderColor: "rgba(124,111,239,0.4)",
+              background: "rgba(124,111,239,0.08)",
+              color: "rgba(124,111,239,0.9)",
+            }}
           >
-            No editions in this brand yet.
+            84 AI-Generated Characters · Cycle 001
           </div>
-        )}
+          <h1
+            className="text-5xl md:text-7xl font-bold leading-none tracking-tight mb-6"
+            style={{ color: "var(--text-primary)" }}
+          >
+            Wear the
+            <br />
+            <span
+              className="italic"
+              style={{
+                background: "linear-gradient(90deg, #7c6fef 0%, #4bb8a9 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              AI you vibe with
+            </span>
+          </h1>
+          <p
+            className="text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            84 unique characters — one for every personality, one for every hustle.
+            Each one backed by an AI model, each one made for your world.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link
+              to="/shop"
+              className="px-8 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105"
+              style={{
+                background: "linear-gradient(135deg, #7c6fef 0%, #5b8dee 100%)",
+                color: "white",
+              }}
+            >
+              Browse all characters
+            </Link>
+            <Link
+              to="/about"
+              className="px-8 py-3 rounded-xl font-semibold text-sm border transition-all hover:scale-105"
+              style={{
+                borderColor: "var(--border)",
+                color: "var(--text-secondary)",
+                background: "transparent",
+              }}
+            >
+              What is Blazing Tails?
+            </Link>
+          </div>
+        </div>
       </section>
 
-      {/* Dark editorial band */}
-      <section
-        style={{
-          backgroundColor: "var(--bg-near-black)",
-          padding: "4rem 1.25rem",
-        }}
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <p
-            className="text-overline mb-4"
-            style={{ color: "rgba(255,255,255,0.35)" }}
-          >
-            About Blazing Tails
-          </p>
-          <h2
-            className="font-serif mb-4"
-            style={{
-              fontSize: "clamp(1.75rem, 4vw, 2.75rem)",
-              fontWeight: 500,
-              color: "rgba(255,255,255,0.92)",
-              lineHeight: 1.2,
-            }}
-          >
-            100% AI-generated synthetic characters.
-            <br />
-            Zero real people. All New York soul.
-          </h2>
-          <p
-            className="font-sans"
-            style={{
-              fontSize: "0.9rem",
-              color: "rgba(255,255,255,0.4)",
-              maxWidth: "560px",
-              margin: "0 auto 2rem",
-              lineHeight: 1.7,
-            }}
-          >
-            Every performer in Blazing Tails is a fully synthetic AI-generated character.
-            Seven brand lines. Paired SFW and NSFW editions for every issue.
-            New content monthly.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {BRANDS.map((brand) => (
+      {/* Group filter pills */}
+      <section className="px-5 pb-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-wrap gap-2 justify-center">
+            {GROUPS.map((group) => (
               <Link
-                key={brand}
-                to={`/category/${brand.toLowerCase()}`}
-                className="font-sans font-medium text-xs px-5 py-2 rounded-lg transition-all"
+                key={group}
+                to={`/shop?group=${group}`}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm border transition-all hover:scale-105"
                 style={{
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  color: "rgba(255,255,255,0.6)",
+                  borderColor: "var(--border)",
+                  color: "var(--text-secondary)",
+                  background: "var(--card-bg)",
                 }}
               >
-                {brand}
+                <span>{GROUP_ICONS[group]}</span>
+                {group}
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer
-        style={{
-          borderTop: "1px solid var(--border-warm)",
-          backgroundColor: "var(--bg-ivory)",
-          padding: "2rem 1.25rem",
-        }}
-      >
-        <div className="max-w-2xl mx-auto text-center">
-          <p
-            className="font-sans text-xs leading-relaxed mb-2"
-            style={{ color: "var(--text-warm-silver)" }}
+      {/* Featured characters */}
+      <section className="px-5 pb-20">
+        <div className="max-w-7xl mx-auto">
+          <h2
+            className="text-xl font-semibold mb-6"
+            style={{ color: "var(--text-primary)" }}
           >
-            All Blazing Tails performers are 100% AI-generated synthetic characters and are not
-            based on any real person's likeness. NY AI Transparency Act (effective June 9, 2026)
-            compliant — all synthetic performer advertising includes mandatory disclosure.
-            Adults 18+ only.
-          </p>
-          <p
-            className="font-sans text-xs"
-            style={{ color: "var(--text-warm-silver)", opacity: 0.6 }}
-          >
-            © 2026 NYC Tailblazers ·{" "}
-            <a
-              href="mailto:nyctailblazers@nyctailblazers.com"
-              style={{ color: "inherit" }}
+            Featured characters
+          </h2>
+
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl border animate-pulse"
+                  style={{ height: "280px", background: "var(--card-bg)", borderColor: "var(--border)" }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {featured.map((c) => (
+                <CharacterCard key={c.id} character={c} />
+              ))}
+            </div>
+          )}
+
+          <div className="text-center mt-10">
+            <Link
+              to="/shop"
+              className="inline-block px-8 py-3 rounded-xl font-semibold text-sm border transition-all hover:scale-105"
+              style={{
+                borderColor: "var(--border)",
+                color: "var(--text-primary)",
+                background: "var(--card-bg)",
+              }}
             >
-              nyctailblazers@nyctailblazers.com
-            </a>
-          </p>
+              See all 84 characters →
+            </Link>
+          </div>
         </div>
+      </section>
+
+      {/* Brand strip */}
+      <section
+        className="border-t border-b py-12 px-5"
+        style={{ borderColor: "var(--border)", background: "var(--card-bg)" }}
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-xs font-mono uppercase tracking-widest mb-6" style={{ color: "var(--text-tertiary)" }}>
+            Every character is
+          </p>
+          <div className="grid grid-cols-3 gap-6 text-center">
+            {[
+              { icon: "🧠", label: "AI-powered", desc: "Built on real model personalities" },
+              { icon: "🗽", label: "NYC-rooted", desc: "Every character from the five boroughs" },
+              { icon: "✨", label: "Fully disclosed", desc: "AI-generated — transparent by design" },
+            ].map(({ icon, label, desc }) => (
+              <div key={label}>
+                <div className="text-3xl mb-2">{icon}</div>
+                <div className="font-semibold text-sm mb-1" style={{ color: "var(--text-primary)" }}>{label}</div>
+                <div className="text-xs" style={{ color: "var(--text-tertiary)" }}>{desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 px-5 text-center" style={{ background: "var(--bg)" }}>
+        <p className="text-xs max-w-2xl mx-auto leading-relaxed" style={{ color: "var(--text-tertiary)" }}>
+          All Blazing Tails characters are 100% AI-generated synthetic personas and are not based
+          on any real person's likeness. NY AI Transparency Act (effective June 9, 2026) compliant —
+          all synthetic character content includes mandatory disclosure.
+        </p>
+        <p className="text-xs mt-2" style={{ color: "var(--text-tertiary)", opacity: 0.6 }}>
+          © 2026 NYC Tailblazers ·{" "}
+          <a href="mailto:nyctailblazers@nyctailblazers.com" style={{ color: "inherit" }}>
+            nyctailblazers@nyctailblazers.com
+          </a>
+        </p>
       </footer>
     </div>
   );
